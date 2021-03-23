@@ -16,14 +16,14 @@ namespace eShopSolution.Data.Entities
 
         public bool? IsFeatured { get; set; }
 
-      //  public List<ProductInCategory> ProductInCategories { get; set; }
+        public List<ProductInCategory> ProductInCategories { get; set; }
 
         public List<OrderDetail> OrderDetails { get; set; }
 
         public List<Cart> Carts { get; set; }
 
-      //  public List<ProductTranslation> ProductTranslations { get; set; }
+        public List<ProductTranslation> ProductTranslations { get; set; }
 
-      //  public List<ProductImage> ProductImages { get; set; }
+        public List<ProductImage> ProductImages { get; set; }
     }
 }

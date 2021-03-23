@@ -15,5 +15,8 @@ namespace eShopSolution.Data.Entities
         public Status Status {set;get;}
         public int SeoDescription{set;get;}
         public int SeoTitl { set; get; }
+
+        public List<ProductInCategory> ProductInCategories { get; set; }
+        public List<CategoryTranslation> CategoryTranslations { get; set; }
     }
 }
