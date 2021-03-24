@@ -1,6 +1,4 @@
-﻿using eShopSolution.Application.Catalog.Products.Dtos;
-using eShopSolution.Application.Catalog.Products.Dtos.Manage;
-using eShopSolution.Application.Dtos;
+﻿
 using eShopSolution.Data.EF;
 using eShopSolution.Data.Entities;
 using eShopSolution.Utilities.Exceptions;
@@ -11,6 +9,9 @@ using System.Threading.Tasks;
 
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using eShopSolution.ViewModels.Catalog.Products.Manage;
+using eShopSolution.ViewModels.Common;
+using eShopSolution.ViewModels.Catalog.Products;
 
 namespace eShopSolution.Application.Catalog.Products
 {
