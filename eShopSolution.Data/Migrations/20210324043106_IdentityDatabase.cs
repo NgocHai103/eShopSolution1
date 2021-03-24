@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace eShopSolution.Data.Migrations
 {
-    public partial class SeedIdentityUser : Migration
+    public partial class IdentityDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,7 +26,7 @@ namespace eShopSolution.Data.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTime(2021, 3, 23, 21, 16, 42, 118, DateTimeKind.Local).AddTicks(9949));
+                value: new DateTime(2021, 3, 23, 21, 31, 5, 937, DateTimeKind.Local).AddTicks(3123));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -50,7 +50,7 @@ namespace eShopSolution.Data.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTime(2021, 3, 23, 21, 15, 46, 839, DateTimeKind.Local).AddTicks(5400));
+                value: new DateTime(2021, 3, 23, 21, 17, 59, 57, DateTimeKind.Local).AddTicks(5563));
         }
     }
 }
