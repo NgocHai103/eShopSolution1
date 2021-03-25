@@ -1,4 +1,5 @@
 ﻿
+using eShopSolution.ViewModels.Catalog.ProductImages;
 using eShopSolution.ViewModels.Catalog.Products;
 using eShopSolution.ViewModels.Catalog.Products.Manage;
 using eShopSolution.ViewModels.Common;
@@ -20,9 +21,9 @@ namespace eShopSolution.Application.Catalog.Products
         public Task AddViewcount(int productId);
         public Task<bool> UpdateStock(int productId,int addedQuantity);
         public Task<PageResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request);
-        Task<int> AddImage(int productId, List<IFormFile> files);
+        Task<int> AddImage(int productId, ProductImageCreateRequest request);
         Task<int> RemoveImage(int imageId);
-        Task<int> UpdateImage(int imageId, string caption,bool Default);
+        Task<int> UpdateImage(int imageId,ProductImageUpdateRequest request);
         Task<List<ProductImageViewModel>> GetListImage(int productId);
     }
 }
