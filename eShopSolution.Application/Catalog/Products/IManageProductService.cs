@@ -1,7 +1,6 @@
 ﻿
 using eShopSolution.ViewModels.Catalog.ProductImages;
 using eShopSolution.ViewModels.Catalog.Products;
-using eShopSolution.ViewModels.Catalog.Products.Manage;
 using eShopSolution.ViewModels.Common;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -20,7 +19,7 @@ namespace eShopSolution.Application.Catalog.Products
         public Task<bool> UpdatePrice(int productId,decimal newPrice);
         public Task AddViewcount(int productId);
         public Task<bool> UpdateStock(int productId,int addedQuantity);
-        public Task<PageResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request);
+        public Task<PageResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
         Task<int> AddImage(int productId, ProductImageCreateRequest request);
         Task<int> RemoveImage(int imageId);
         Task<int> UpdateImage(int imageId,ProductImageUpdateRequest request);
