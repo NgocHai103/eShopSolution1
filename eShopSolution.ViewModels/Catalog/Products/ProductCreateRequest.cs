@@ -11,7 +11,7 @@ namespace eShopSolution.ViewModels.Catalog.Products
         public decimal OriginalPrice { set; get; }
         public int Stock { set; get; }
 
-        public int ProductId { set; get; }
+        //[Required(ErrorMessage = "Bạn phải nhập tên sản phẩm")]
         public string Name { set; get; }
         public string Description { set; get; }
         public string Details { set; get; }

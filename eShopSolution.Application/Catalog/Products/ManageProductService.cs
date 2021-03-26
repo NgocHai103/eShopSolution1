@@ -19,7 +19,7 @@ using eShopSolution.ViewModels.Catalog.ProductImages;
 
 namespace eShopSolution.Application.Catalog.Products
 {
-    public class ManageProductService : IManagerProductSevice
+    public class ManageProductService : IManageProductService
     {
         private readonly EShopDBContext _context;
         private readonly IStorageService _storageService;
@@ -97,7 +97,8 @@ namespace eShopSolution.Application.Catalog.Products
                 };
             }
             _context.Products.Add(product);
-            return await _context.SaveChangesAsync();
+             await _context.SaveChangesAsync();
+            return product.Id;
         }
 
 
@@ -155,6 +156,7 @@ namespace eShopSolution.Application.Catalog.Products
             };
             return  pageResult;
         }
+
 
         public async Task<List<ProductImageViewModel>> GetListImage(int productId)
         {
@@ -239,6 +241,30 @@ namespace eShopSolution.Application.Catalog.Products
             product.Stock += addedQuantity;
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<ProductViewModel> GetById(int productId,string languageId)
+        {
+            var product = await _context.Products.FindAsync(productId);
+            var productTranslation = await _context.ProductTranslations.FirstOrDefaultAsync(x=>x.ProductId==productId);
+            return  new ProductViewModel()
+            {
+                Id = product.Id,
+               // Name = product.Name,
+                DateCreated = product.DateCreated,
+                Description = productTranslation!=null?productTranslation.Description : null,
+                LanguageId = productTranslation.LanguageId,
+                Details = productTranslation != null ? productTranslation.Details : null,
+                Name = productTranslation != null ? productTranslation.Name : null,
+                OriginalPrice = product.OriginalPrice,
+                Price = product.Price,
+                SeoAlias = productTranslation != null ? productTranslation.SeoAlias : null,
+                SeoDescription = productTranslation != null ? productTranslation.SeoDescription : null,
+                SeoTitle = productTranslation != null ? productTranslation.SeoTitle : null,
+                Stock = product.Stock,
+                ViewCount = product.ViewCount
+            };
+        }
+
         private async Task<string> SaveFile(IFormFile file)
         {
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
