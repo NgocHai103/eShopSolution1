@@ -25,5 +25,6 @@ namespace eShopSolution.Application.Catalog.Products
         Task<int> RemoveImage(int imageId);
         Task<int> UpdateImage(int imageId,ProductImageUpdateRequest request);
         Task<List<ProductImageViewModel>> GetListImage(int productId);
+        Task<ProductImageViewModel> GetImageById(int imageId);
     }
 }
