@@ -27,7 +27,7 @@ namespace EShopSolution.BackendApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var resultToken = await _userService.Authencate(request);
-            if(string.IsNullOrEmpty(resultToken))
+            if(string.IsNullOrEmpty(resultToken.ResultObj))
             {
                 return BadRequest("Username or passwork is incorrect.");
             }
@@ -39,12 +39,24 @@ namespace EShopSolution.BackendApi.Controllers
         }
         [HttpPost]
         [AllowAnonymous] // don't need add Token
-        public async Task<IActionResult> Register([FromForm] RegisterRequest request)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var resutl = await _userService.Register(request);
-            if (!resutl)
+            if (!resutl.IsSuccessed)
+            {
+                return BadRequest("Register is unsuccessful.");
+            }
+            return Ok();
+        }
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] RegisterRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var resutl = await _userService.Register(request);
+            if (!resutl.IsSuccessed)
             {
                 return BadRequest("Register is unsuccessful.");
             }

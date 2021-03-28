@@ -29,7 +29,7 @@ namespace eShopSolution.Application.System.Users
             _roleManager = roleManager;
             _config = config;
         }
-        public async Task<string> Authencate(LoginRequest request)
+        public async Task<ApiResult<string>> Authencate(LoginRequest request)
         {
 
             var user = await _userManager.FindByNameAsync(request.UserName);
@@ -57,11 +57,12 @@ namespace eShopSolution.Application.System.Users
                 claims,
                 expires: DateTime.Now.AddHours(3),
                 signingCredentials: creds);
-            return new JwtSecurityTokenHandler().WriteToken(token);
-           // return new ApiSuccessResult<string>(new JwtSecurityTokenHandler().WriteToken(token));
+            return new ApiSuccessResult<string>(new JwtSecurityTokenHandler().WriteToken(token));
         }
 
-        public async Task<PageResult<UserVM>> GetUsersPaging(GetUserPagingRequest request)
+
+
+        public async Task<ApiResult<PageResult<UserVM>>> GetUsersPaging(GetUserPagingRequest request)
         {
             var query = _userManager.Users;
             if(!string.IsNullOrEmpty(request.Keyword))
@@ -87,13 +88,25 @@ namespace eShopSolution.Application.System.Users
                 TotalRecord = totalRow,
                 Items = data
             };
-            return  pagedResult;
+            return new ApiSuccessResult<PageResult<UserVM>>(pagedResult);
 
         }
 
-        public async Task<bool> Register(RegisterRequest request)
+
+
+        public async Task<ApiResult<bool>> Register(RegisterRequest request)
         {
-            var user = new AppUser()
+            var user = await _userManager.FindByNameAsync(request.UserName);
+            if(user!=null)
+            {
+                return new ApiErrorResult<bool>("Tài khoản đã tồn tại.");
+            }
+            if (await _userManager.FindByEmailAsync(request.Email) != null)
+            {
+                return new ApiErrorResult<bool>("Email đã đã được đăng kí.");
+            }
+
+            user = new AppUser()
             {
                 Dob = request.Dob,
                 Email = request.Email,
@@ -104,8 +117,10 @@ namespace eShopSolution.Application.System.Users
             };
             var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
-                return true;
-            else return false;
+                return new ApiSuccessResult<bool>();
+            else return new ApiErrorResult<bool>("Đăng kí không thành công.");
         }
+
+      
     }
 }
