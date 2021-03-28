@@ -34,7 +34,12 @@ namespace eShopSolution.AdminApp
                     options.LoginPath = "/User/Login";
                     options.AccessDeniedPath = "/User/Forbidden";
                 });
+           // services.AddDistributedMemoryCache();
 
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+            });
             services.AddControllersWithViews();
             services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());//02
             IMvcBuilder builder = services.AddRazorPages();
@@ -67,7 +72,7 @@ namespace eShopSolution.AdminApp
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
