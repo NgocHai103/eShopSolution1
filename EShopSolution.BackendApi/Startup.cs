@@ -8,6 +8,9 @@ using eShopSolution.Application.System.Users;
 using eShopSolution.Data.EF;
 using eShopSolution.Data.Entities;
 using eShopSolution.Utilities.Constants;
+using eShopSolution.ViewModels.System.Users;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,16 +40,20 @@ namespace EShopSolution.BackendApi
             services.AddDbContext<EShopDBContext>(b =>
                 b.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)));
             services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<EShopDBContext>().AddDefaultTokenProviders();
+
             //Declare DI
             services.AddTransient<IStorageService, FileStorageService>();
-            services.AddTransient<IPublicProductService, PublicProductService>();
-            services.AddTransient<IManageProductService, ManageProductService>();
+            services.AddTransient<IProductService, ProductService>();
             services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
             services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUserService,UserService>();
-
-            services.AddControllers();
+            //add fluentvalidation for login/register configration
+            //services.AddTransient<IValidator<RegisterRequest>, RegisterRequestVaditor>();
+            //services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();
+            //registor dll the same
+            services.AddControllers().AddFluentValidation(fv=>fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());//02
+            //services.
 
             services.AddSwaggerGen(c =>
             {

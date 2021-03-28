@@ -12,6 +12,7 @@ namespace EShopSolution.BackendApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -21,7 +22,7 @@ namespace EShopSolution.BackendApi.Controllers
         }
         [HttpPost("authenticate")]
         [AllowAnonymous]
-        public async Task<IActionResult> Authenticate([FromForm] LoginRequest request)
+        public async Task<IActionResult> Authenticate([FromBody] LoginRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -30,11 +31,15 @@ namespace EShopSolution.BackendApi.Controllers
             {
                 return BadRequest("Username or passwork is incorrect.");
             }
-            return Ok( new {token = resultToken});
+            else
+            {
+              //  HttpContext.Session.SetString("Token",resultToken);
+            }
+            return Ok(resultToken);
         }
-        [HttpPost("register")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Authenticate([FromForm] RegisterRequest request)
+        [HttpPost]
+        [AllowAnonymous] // don't need add Token
+        public async Task<IActionResult> Register([FromForm] RegisterRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -44,6 +49,12 @@ namespace EShopSolution.BackendApi.Controllers
                 return BadRequest("Register is unsuccessful.");
             }
             return Ok();
+        }
+        [HttpGet("paging")]
+        public async Task<IActionResult> GetPaging([FromQuery] GetUserPagingRequest request)
+        {
+            var users = await _userService.GetUsersPaging(request);
+            return Ok(users);
         }
     }
 }
