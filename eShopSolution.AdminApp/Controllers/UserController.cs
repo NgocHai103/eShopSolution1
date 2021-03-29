@@ -76,6 +76,17 @@ namespace eShopSolution.AdminApp.Controllers
 
 
         }
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var result = await _userApiClient.GetById(id);
+            if (result.IsSuccessed)
+            {
+                return View(result.ResultObj);
+
+            }
+            return RedirectToAction("Error", "Home");
+        }
         [HttpPost]
         public async Task<IActionResult> Edit(UserUpdateRequest request)
         {
