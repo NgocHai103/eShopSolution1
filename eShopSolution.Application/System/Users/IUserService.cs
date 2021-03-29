@@ -11,6 +11,9 @@ namespace eShopSolution.Application.System.Users
     {
          Task<ApiResult<string>> Authencate(LoginRequest request);
          Task<ApiResult<bool>> Register(RegisterRequest request);
-         Task<ApiResult<PageResult<UserVM>>> GetUsersPaging(GetUserPagingRequest request);
+        Task<ApiResult<bool>> Update(Guid Id, UserUpdateRequest request);
+      
+        Task<ApiResult<PageResult<UserVM>>> GetUsersPaging(GetUserPagingRequest request);
+        Task<ApiResult<UserVM>> GetById(Guid Id);
     }
 }

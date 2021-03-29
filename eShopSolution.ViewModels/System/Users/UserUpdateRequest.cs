@@ -7,6 +7,8 @@ namespace eShopSolution.ViewModels.System.Users
 {
     public class UserUpdateRequest
     {
+        public Guid Id { get; set; }
+
         [Display(Name = "Tên")]
         public string FirstName { get; set; }
 
@@ -19,6 +21,8 @@ namespace eShopSolution.ViewModels.System.Users
 
         [Display(Name = "Email")]
         public string Email { get; set; }
-    
+        [Display(Name = "Số điện thoại")]
+        public string PhoneNumber { get; set; }
+
     }
 }
