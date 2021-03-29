@@ -5,14 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Logging;
-using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace eShopSolution.AdminApp.Controllers
@@ -26,7 +19,7 @@ namespace eShopSolution.AdminApp.Controllers
             _userApiClient = userApiClient;
             _configuration = configuration;
         }
-        public async Task<IActionResult> Index(string keyword, int pageIndex=1, int pageSize=2)
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 5)
         {
             //var user = User.Identity.Name;
             var request = new GetUserPagingRequest()
@@ -36,6 +29,11 @@ namespace eShopSolution.AdminApp.Controllers
                 PageSize = pageSize
             };
             var data = await _userApiClient.GetUserPaging(request);
+            ViewBag.Keyword = keyword;
+            if(TempData["result"]!=null)
+            {
+                ViewBag.SuccessMsg = TempData["result"];
+            }    
             return View(data.ResultObj);
         }
         [HttpGet]
@@ -50,15 +48,19 @@ namespace eShopSolution.AdminApp.Controllers
                 return View();
             var result = await _userApiClient.RegisterUser(request);
             if (result.IsSuccessed)
+            {
+                TempData["result"] = "Thêm tài khoản thành công";
                 return RedirectToAction("Index");
-            ModelState.AddModelError("",result.Message);
+            }    
+                
+            ModelState.AddModelError("", result.Message);
             return View(request);
         }
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
             var result = await _userApiClient.GetById(id);
-            if(result.IsSuccessed)
+            if (result.IsSuccessed)
             {
                 var user = result.ResultObj;
                 var updateRequest = new UserUpdateRequest()
@@ -70,9 +72,9 @@ namespace eShopSolution.AdminApp.Controllers
                     PhoneNumber = user.PhoneNumber,
                     Id = id
                 };
-                 return View(updateRequest);
+                return View(updateRequest);
             }
-            return RedirectToAction("Error","Home");
+            return RedirectToAction("Error", "Home");
 
 
         }
@@ -94,7 +96,11 @@ namespace eShopSolution.AdminApp.Controllers
                 return View();
             var result = await _userApiClient.UpdaterUser(request.Id, request);
             if (result.IsSuccessed)
+            {
+                TempData["result"] = "Đã sửa tài khoản";
                 return RedirectToAction("Index");
+            }    
+                
             ModelState.AddModelError("", result.Message);
             return View(request);
         }
@@ -105,6 +111,63 @@ namespace eShopSolution.AdminApp.Controllers
             HttpContext.Session.Remove("Token");
             return RedirectToAction("Index", "Login");
         }
-    
+        [HttpGet]
+        public async Task<IActionResult> Delete(UserDeleteRequest userDelete)
+        {
+            var result = await _userApiClient.GetById(userDelete.id);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Đã xóa tài khoản "+userDelete.Username;
+                var user = result.ResultObj;
+                return View(
+                    new UserDeleteRequest
+                    { 
+                        id = user.Id,
+                        Username = user.UserName
+                    });
+            }
+            return RedirectToAction("Error", "Home");
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            if (!ModelState.IsValid)
+                return View();
+            var result = await _userApiClient.Delete(id);
+            if (result.IsSuccessed)
+                return RedirectToAction("Index");
+
+          // ModelState.AddModelError("", result.Message);
+            return View(result.Message);
+        }
+        [HttpGet]
+        public async Task<IActionResult> RoleAssign(Guid id)
+        {
+            var result = await _userApiClient.GetById(id);
+            if (result.IsSuccessed)
+            {
+                var user = result.ResultObj;
+                var updateRequest = new RoleAssignRequest();
+                return View(updateRequest);
+            }
+            return RedirectToAction("Error", "Home");
+
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> RoleAssign(RoleAssignRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+            var result = await _userApiClient.RoleAssign(request.Id, request);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Cập nhật quyền thành công";
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", result.Message);
+            return View(request);
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using eShopSolution.Application.Catalog.Products;
 using eShopSolution.Application.Common;
+using eShopSolution.Application.System.Roles;
 using eShopSolution.Application.System.Users;
 using eShopSolution.Data.EF;
 using eShopSolution.Data.Entities;
@@ -48,6 +49,7 @@ namespace EShopSolution.BackendApi
             services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUserService,UserService>();
+            services.AddTransient<IRoleService, RoleService>();
             //add fluentvalidation for login/register configration
             //services.AddTransient<IValidator<RegisterRequest>, RegisterRequestVaditor>();
             //services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();

@@ -14,7 +14,7 @@ namespace eShopSolution.ViewModels.System.Users
         [Display(Name = "Họ")]
         public string LastName { get; set; }
         [Display(Name = "Ngày Sinh")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         public DateTime Dob { get; set; }
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -23,5 +23,6 @@ namespace eShopSolution.ViewModels.System.Users
 
         [Display(Name = "Tài khoản")]
         public string UserName { get; set; }
-    }
+        public IList<string> Roles { get; set; }
+}
 }

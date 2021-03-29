@@ -13,6 +13,8 @@ namespace eShopSolution.AdminApp.Services
         public Task<ApiResult<PageResult<UserVM>>> GetUserPaging(GetUserPagingRequest request);
         public Task<ApiResult<bool>> RegisterUser(RegisterRequest request);
         public Task<ApiResult<bool>> UpdaterUser(Guid Id,UserUpdateRequest request);
+        public Task<ApiResult<bool>> Delete(Guid Id);
         public Task<ApiResult<UserVM>> GetById(Guid Id);
+        public Task<ApiResult<bool>> RoleAssign(Guid Id,RoleAssignRequest request);
     }
 }

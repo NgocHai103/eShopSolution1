@@ -30,7 +30,6 @@ namespace eShopSolution.AdminApp.Controllers
         public async Task<IActionResult> Index()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-           // HttpContext.Session.Remove("Token");
             return View();
         }
         [HttpPost]
@@ -41,6 +40,11 @@ namespace eShopSolution.AdminApp.Controllers
 
             var result = await _userApiClient.Authenticate(request);
 
+            if(result.ResultObj==null)
+            {
+                ModelState.AddModelError("",result.Message);
+                return View();
+            }    
             var userPrincipal = this.ValidationToken(result.ResultObj);
 
             var authProperties = new AuthenticationProperties

@@ -32,7 +32,7 @@ namespace eShopSolution.AdminApp.Services
 
             var client = _httpClientFactory.CreateClient();
 
-            client.BaseAddress = new Uri("https://localhost:44386");
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
 
             // client.PostAsync("/api/users/authenticate",httpContent);
 
@@ -41,6 +41,20 @@ namespace eShopSolution.AdminApp.Services
                 return JsonConvert.DeserializeObject<ApiSuccessResult<string>>(await response.Content.ReadAsStringAsync());
 
             return JsonConvert.DeserializeObject<ApiErrorResult<string>>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async Task<ApiResult<bool>> Delete(Guid id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _httpContextAccessor.HttpContext.Session.GetString("Token")); //"Bearer" + 
+          //  _httpContextAccessor.HttpContext.Session["Token"];
+           var response = await client.DeleteAsync($"/api/users/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(await response.Content.ReadAsStringAsync());
+            }
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(await response.Content.ReadAsStringAsync());
         }
 
         public async Task<ApiResult<UserVM>> GetById(Guid Id)
@@ -76,7 +90,6 @@ namespace eShopSolution.AdminApp.Services
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await client.PostAsync($"/api/users",httpContent);
-
             if(response.IsSuccessStatusCode)
             {
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(await response.Content.ReadAsStringAsync());
@@ -84,6 +97,23 @@ namespace eShopSolution.AdminApp.Services
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(await response.Content.ReadAsStringAsync());
         }
 
+        public async Task<ApiResult<bool>> RoleAssign(Guid Id, RoleAssignRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _httpContextAccessor.HttpContext.Session.GetString("Token"));
+
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PutAsync($"/api/users/{Id}/roles", httpContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(await response.Content.ReadAsStringAsync());
+            }
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(await response.Content.ReadAsStringAsync());
+        }
 
         public async Task<ApiResult<bool>> UpdaterUser(Guid Id, UserUpdateRequest request)
         {

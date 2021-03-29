@@ -27,7 +27,7 @@ namespace EShopSolution.BackendApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var result = await _userService.Authencate(request);
-            if(string.IsNullOrEmpty(result.ResultObj))
+            if(result.IsSuccessed)
             {
                 return BadRequest(result);
             }
@@ -63,6 +63,19 @@ namespace EShopSolution.BackendApi.Controllers
             }
             return Ok(resutl);
         }
+
+        [HttpPut("{id}/roles")]
+        public async Task<IActionResult> RoleAssign(Guid id, [FromBody] RoleAssignRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var resutl = await _userService.RoleAssign(id, request);
+            if (!resutl.IsSuccessed)
+            {
+                return BadRequest(resutl);
+            }
+            return Ok(resutl);
+        }
         [HttpGet("paging")]
         public async Task<IActionResult> GetPaging([FromQuery] GetUserPagingRequest request)
         {
@@ -74,6 +87,13 @@ namespace EShopSolution.BackendApi.Controllers
         {
             var user = await _userService.GetById(id);
             return Ok(user);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var resutl = await _userService.Delete(id);
+            return Ok(resutl);
         }
     }
 }
