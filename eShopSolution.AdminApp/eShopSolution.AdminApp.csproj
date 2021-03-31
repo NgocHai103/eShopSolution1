@@ -20,4 +20,8 @@
     <ProjectReference Include="..\eShopSolution.ViewModels\eShopSolution.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Home\Components\" />
+  </ItemGroup>
+
 </Project>
