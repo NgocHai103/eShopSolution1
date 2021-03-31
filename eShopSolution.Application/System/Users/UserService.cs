@@ -168,11 +168,15 @@ namespace eShopSolution.Application.System.Users
                 return new ApiErrorResult<bool>("Tài khoản không tồn tại.");
             }
             var removedRoles = request.Roles.Where(x => x.Selected == false).Select(x => x.Name).ToList();
-
-            await _userManager.RemoveFromRolesAsync(user, removedRoles);
+            foreach (var roleName in removedRoles)
+            {
+                if (await _userManager.IsInRoleAsync(user, roleName) == true)
+                    await _userManager.RemoveFromRolesAsync(user, removedRoles);
+            }
 
             var addedRoles = request.Roles.Where(x => x.Selected == true).Select(x => x.Name).ToList();
-            foreach(var roleName in addedRoles)
+           
+            foreach (var roleName in addedRoles)
             {
                 if(await _userManager.IsInRoleAsync(user,roleName) == false)
                     await _userManager.AddToRoleAsync(user, roleName);

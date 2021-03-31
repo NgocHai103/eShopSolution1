@@ -46,6 +46,8 @@ namespace eShopSolution.AdminApp
             services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());//02
             IMvcBuilder builder = services.AddRazorPages();
             services.AddTransient<IUserApiClient, UserApiClient>();
+            services.AddTransient<IRoleApiClient, RoleApiClient>();
+            services.AddTransient<ILanguageApiClient, LanguageApiClient>();
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 #if DEBUG
             if(environment == Microsoft.AspNetCore.Hosting.EnvironmentName.Development)
