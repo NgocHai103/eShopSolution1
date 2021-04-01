@@ -76,7 +76,7 @@ namespace eShopSolution.Application.System.Users
             var result = await _userManager.DeleteAsync(user);
             if (result.Succeeded)
                 return new ApiSuccessResult<bool>();
-            else return new ApiErrorResult<bool>("Xóa thành công.");
+            else return new ApiErrorResult<bool>("Xóa không thành công.");
         }
 
         public async Task<ApiResult<UserVM>> GetById(Guid Id)

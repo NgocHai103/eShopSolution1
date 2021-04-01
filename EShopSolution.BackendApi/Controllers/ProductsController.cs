@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using eShopSolution.Application.Catalog.Products;
 using eShopSolution.ViewModels.Catalog.ProductImages;
 using eShopSolution.ViewModels.Catalog.Products;
+using eShopSolution.ViewModels.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,12 +24,12 @@ namespace EShopSolution.BackendApi.Controllers
             _productSevice = productSevice;
         }
 
-        
-        //localhost:port/api/product?pageIndex=1$pageSize=10&CategoryId=xx 
-        [HttpGet("{languageId}")]
-        public async Task<IActionResult> GetPaging(string languageId,[FromQuery] GetPublicProductPagingRequest request)
+
+        //localhost:port/api/product/paging?pageIndex=1$pageSize=10&CategoryId=xx 
+        [HttpGet("paging")]
+        public async Task<IActionResult> GetPaging([FromQuery] GetManageProductPagingRequest request)
         {
-            var products = await _productSevice.GetAllByCategoryId(languageId,request);
+            var products = await _productSevice.GetAllPaging(request);
             return Ok(products);
         }
         //localhost:port/api/product/1
@@ -41,18 +42,15 @@ namespace EShopSolution.BackendApi.Controllers
             return Ok(product);
         }
         [HttpPost]
-        public async Task<IActionResult> Creat([FromForm] ProductCreateRequest request)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Create([FromForm] ProductCreateRequest request)
         {
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             var productId = await _productSevice.Create(request);
-            if (productId == 0)
-                return BadRequest();//return 404 error
-
-            var product = await _productSevice.GetById(productId, request.LanguageId);
-            return CreatedAtAction(nameof(GetById), new { id = productId }, product);
+            return Ok(productId);
         }
         [HttpPut]
         public async Task<IActionResult> Update([FromQuery] ProductUpdateRequest request)

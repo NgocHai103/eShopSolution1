@@ -12,22 +12,22 @@ namespace eShopSolution.Application.Catalog.Products
 {
     public interface IProductService
     {
-       public Task<int> Create(ProductCreateRequest request);
+       public Task<ApiResult<bool>> Create(ProductCreateRequest request);
         public Task<int> Update(ProductUpdateRequest request);
-        public Task<ProductViewModel> GetById(int productId,string languageId);
+        public Task<ProductVm> GetById(int productId,string languageId);
         public Task<int> Delete(int productId);
 
         public Task<bool> UpdatePrice(int productId,decimal newPrice);
         public Task AddViewcount(int productId);
         public Task<bool> UpdateStock(int productId,int addedQuantity);
-        public Task<PageResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request);
+        public Task<ApiResult<PageResult<ProductVm>>> GetAllPaging(GetManageProductPagingRequest request);
         Task<int> AddImage(int productId, ProductImageCreateRequest request);
         Task<int> RemoveImage(int imageId);
         Task<int> UpdateImage(int imageId,ProductImageUpdateRequest request);
         Task<List<ProductImageViewModel>> GetListImage(int productId);
         Task<ProductImageViewModel> GetImageById(int imageId);
 
-        Task<PageResult<ProductViewModel>> GetAllByCategoryId(string languageId, GetPublicProductPagingRequest request);
-        Task<List<ProductViewModel>> GetAll(string languageId);
+        Task<PageResult<ProductVm>> GetAllByCategoryId(string languageId, GetPublicProductPagingRequest request);
+        Task<List<ProductVm>> GetAll(string languageId);
     }
 }
