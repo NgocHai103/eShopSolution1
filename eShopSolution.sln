@@ -28,7 +28,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Hots", "3.Hots", "{5E7968
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eShopSolution.AdminApp", "eShopSolution.AdminApp\eShopSolution.AdminApp.csproj", "{EB7EC8C7-6EC2-448E-B4FF-3AC14BE3649C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sea", "Sea\Sea.csproj", "{46A69200-CA25-4E15-B972-0969B35D40C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sea", "Sea\Sea.csproj", "{46A69200-CA25-4E15-B972-0969B35D40C3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Teamplate", "Teamplate", "{1C9E3840-401B-486A-B174-DD362E790134}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
