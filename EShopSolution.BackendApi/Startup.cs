@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using eShopSolution.Application.Catalog.Categories;
 using eShopSolution.Application.Catalog.Products;
 using eShopSolution.Application.Common;
 using eShopSolution.Application.System.Languages;
@@ -52,6 +53,7 @@ namespace EShopSolution.BackendApi
             services.AddTransient<IUserService,UserService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<ILanguageService, LanguageService>();
+            services.AddTransient<ICategoryService, CategoryService>();
             //add fluentvalidation for login/register configration
             //services.AddTransient<IValidator<RegisterRequest>, RegisterRequestVaditor>();
             //services.AddTransient<IValidator<LoginRequest>, LoginRequestValidator>();

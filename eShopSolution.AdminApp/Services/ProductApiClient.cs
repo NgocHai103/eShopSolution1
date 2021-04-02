@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace eShopSolution.AdminApp.Services
@@ -77,8 +78,33 @@ namespace eShopSolution.AdminApp.Services
         public async Task<ApiResult<PageResult<ProductVm>>> GetPaging(GetManageProductPagingRequest request)
         {
             var url = $"/api/products/paging?pageIndex=" +
-             $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}&languageid={request.LanguageId}";
+             $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}&languageid={request.LanguageId}&categoryId={request.CategoryId}";
             return await GetAsync<ApiResult<PageResult<ProductVm>>>(url);
+        }
+        public async Task<ApiResult<bool>> CategoryAssign(int id, CategoryAssignRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
+
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PutAsync($"/api/products/{id}/categories", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+        }
+
+        public async Task<ProductVm> GetById(int id, string languageId)
+        {
+            var data = await GetAsync<ProductVm>($"/api/products/{id}/{languageId}");
+
+            return data;
         }
     }
 }
