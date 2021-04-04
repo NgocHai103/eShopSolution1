@@ -63,21 +63,19 @@ namespace EShopSolution.BackendApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var productId = await _productSevice.Create(request);
-            return Ok(productId);
+            var result = await _productSevice.Create(request);
+            return Ok(result);
         }
-        [HttpPut]
-        public async Task<IActionResult> Update([FromQuery] ProductUpdateRequest request)
+        [HttpPut("{productId}")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Update([FromRoute]int productId,[FromForm] ProductUpdateRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var affectedResult = await _productSevice.Update(request);
-            if (affectedResult == 0)
-                return BadRequest();//return 400 error
-
-            return Ok();
+            var result = await _productSevice.Update(productId,request);
+            return Ok(result);
         }
         [HttpDelete("{productId}")]
         public async Task<IActionResult> Delete(int productId)

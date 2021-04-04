@@ -13,7 +13,7 @@ namespace eShopSolution.Application.Catalog.Products
     public interface IProductService
     {
        public Task<ApiResult<bool>> Create(ProductCreateRequest request);
-        public Task<int> Update(ProductUpdateRequest request);
+        public Task<ApiResult<bool>> Update(int productId,ProductUpdateRequest request);
         public Task<ProductVm> GetById(int productId,string languageId);
         public Task<int> Delete(int productId);
 
