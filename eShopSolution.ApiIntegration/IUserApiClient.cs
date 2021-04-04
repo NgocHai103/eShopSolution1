@@ -1,0 +1,20 @@
+﻿using eShopSolution.ViewModels.Common;
+using eShopSolution.ViewModels.System.Users;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace eShopSolution.ApiIntegration
+{
+    public interface IUserApiClient
+    {
+        public Task<ApiResult<string>> Authenticate(LoginRequest request);
+        public Task<ApiResult<PageResult<UserVM>>> GetUserPaging(GetUserPagingRequest request);
+        public Task<ApiResult<bool>> RegisterUser(RegisterRequest request);
+        public Task<ApiResult<bool>> UpdaterUser(Guid Id, UserUpdateRequest request);
+        public Task<ApiResult<bool>> Delete(Guid Id);
+        public Task<ApiResult<UserVM>> GetById(Guid Id);
+        public Task<ApiResult<bool>> RoleAssign(Guid Id, RoleAssignRequest request);
+    }
+}

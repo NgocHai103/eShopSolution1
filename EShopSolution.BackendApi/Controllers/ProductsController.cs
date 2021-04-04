@@ -32,6 +32,20 @@ namespace EShopSolution.BackendApi.Controllers
             var products = await _productSevice.GetAllPaging(request);
             return Ok(products);
         }
+        [HttpGet("lastest/{languageId}/{take}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetLastestProducts(int take, string languageId)
+        {
+            var products = await _productSevice.GetLatestProducts(languageId, take);
+            return Ok(products);
+        }
+        [HttpGet("featured/{languageId}/{take}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetFeaturedProducts(int take, string languageId)
+        {
+            var products = await _productSevice.GetFeaturedProducts(languageId, take);
+            return Ok(products);
+        }
         //localhost:port/api/product/1
         [HttpGet("{productId}/{languageId}")]
         public async Task<IActionResult> GetById(int productId, string languageId)

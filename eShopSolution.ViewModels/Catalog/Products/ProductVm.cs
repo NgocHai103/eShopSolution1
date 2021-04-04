@@ -12,6 +12,7 @@ namespace eShopSolution.ViewModels.Catalog.Products
         public decimal OriginalPrice { set; get; }
         public int Stock { set; get; }
         public int ViewCount { set; get; }
+        public bool? IsFeatured { get; set; }
         public DateTime DateCreated { set; get; }
 
         //tranlation
@@ -21,6 +22,7 @@ namespace eShopSolution.ViewModels.Catalog.Products
         public string SeoDescription { set; get; }
         public string SeoTitle { set; get; }
 
+        public string ThumbnailImage { get; set; }
         public string SeoAlias { get; set; }
         public string LanguageId { set; get; }
         public List<string> Categories { set; get; } = new List<string>();
