@@ -5,9 +5,9 @@ using FluentValidation;
 
 namespace eShopSolution.ViewModels.System.Users
 {
-    public class RegisterRequestVaditor:AbstractValidator<RegisterRequest>
+    public class RegisterRequestValidator:AbstractValidator<RegisterRequest>
     {
-        public RegisterRequestVaditor()
+        public RegisterRequestValidator()
         {
             RuleFor(x => x.FirstName).NotEmpty().WithMessage("First name is required").MaximumLength(200).WithMessage("First name can not over 200 characters");
             RuleFor(x => x.LastName).NotEmpty().WithMessage("Last name is required").MaximumLength(200).WithMessage("Last name can not over 200 characters");

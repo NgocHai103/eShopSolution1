@@ -119,7 +119,11 @@
   </resheader>
   <data name="Add to" xml:space="preserve">
     <value>Thêm vào giỏ</value>
-    <comment>Home/index</comment>
+    <comment>Common</comment>
+  </data>
+  <data name="availavle products" xml:space="preserve">
+    <value>sản phẩm có sẵn</value>
+    <comment>/Product/Category</comment>
   </data>
   <data name="categoryUrl" xml:space="preserve">
     <value>danh-muc</value>
@@ -133,6 +137,10 @@
     <value>Giao hàng</value>
     <comment>Layout</comment>
   </data>
+  <data name="Details" xml:space="preserve">
+    <value>Xem chi tiết</value>
+    <comment>/Product/Category</comment>
+  </data>
   <data name="Featured Products" xml:space="preserve">
     <value>Sản phẩm nổi bật</value>
     <comment>Home/Index</comment>
@@ -145,9 +153,21 @@
     <value>Đăng nhập</value>
     <comment>Layout</comment>
   </data>
+  <data name="New | Available" xml:space="preserve">
+    <value>Hàng mới | có sẵn</value>
+    <comment>Common</comment>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Trang</value>
+    <comment>Common</comment>
+  </data>
   <data name="ProductUrl" xml:space="preserve">
     <value>san-pham</value>
-    <comment>Home/index</comment>
+    <comment>Common</comment>
+  </data>
+  <data name="Sort By" xml:space="preserve">
+    <value>Sắp xếp</value>
+    <comment>/Product/Category</comment>
   </data>
   <data name="Specials Offer" xml:space="preserve">
     <value>Khuyến mãi</value>

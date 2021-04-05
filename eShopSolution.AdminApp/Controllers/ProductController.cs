@@ -28,7 +28,7 @@ namespace eShopSolution.AdminApp.Controllers
             _categoryApiClient = categoryApiClient;
         }
 
-        public async Task<IActionResult> Index(string keyword, int? categoryId, int pageIndex = 1, int pageSize = 5)
+        public async Task<IActionResult> Index(string keyword, int? categoryId, int pageIndex = 1, int pageSize = 1)
         {
             //var user = User.Identity.Name;
             var defaultLanguageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);

@@ -1,11 +1,16 @@
 ﻿@model HomeViewModel
 @inject LazZiya.ExpressLocalization.ISharedCultureLocalizer _loc;
 @using eShopSolution.ViewModels.Catalog.Products;
+}
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
 @{
     var culture = CultureInfo.CurrentCulture.Name;
- }
+}
 @{
     ViewData["Title"] = "Home Page";
+}
+@{
+    var folder = "user-content/";
 }
 @section slider{
     <div id="carouselBlk">
@@ -22,7 +27,7 @@
                                 <p>@slide.Description</p>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 }
             </div>
             <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
@@ -56,19 +61,19 @@
                         <ul class="thumbnails">
                             @foreach (var item in featuredProducts[index])
                             {
-                                    var url = $"/{culture}/{_loc["ProductUrl"]}/{item.Id}";
-                                    <li class="span3">
-                                        <div class="thumbnail">
-                                            @_loc["ProductUrl"]
-                                            <a href="@url"><img src="@item.ThumbnailImage" alt="@item.Name"></a>
-                                            <div class="caption">
-                                                <h5>@item.Name</h5>
-                                                <h4><a class="btn" href="@url" localize-content>VIEW</a> <span class="pull-right">@item.Price.ToString()</span></h4>
-                                            </div>
+                                var url = $"/{culture}/{_loc["ProductUrl"]}/{item.Id}";
+                                <li class="span3">
+                                    <div class="thumbnail">
+                                        @_loc["ProductUrl"]
+                                        <a href="@url"><img src="@(Configuration["BaseAddress"]+folder+@item.ThumbnailImage)" alt="@item.Name"></a>
+                                        <div class="caption">
+                                            <h5>@item.Name</h5>
+                                            <h4><a class="btn" href="@url" localize-content>VIEW</a> <span class="pull-right">@item.Price.ToString()</span></h4>
                                         </div>
-                                    </li>
-                                }
-                            </ul>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
                     </div>
                 }
             </div>
@@ -79,29 +84,30 @@
 </div>
 <h4 localize-content>Latest Products </h4>
 <ul class="thumbnails">
-    @foreach(var item in Model.LastestProducts)
+    @foreach (var item in Model.LastestProducts)
     {
         var url = $"/{culture}/{_loc["ProductUrl"]}/{item.Id}";
-    <li class="span3">
-        <div class="thumbnail">
-            <a href="@url"><img src="@item.ThumbnailImage" alt="@item.Name" /></a>
-            <div class="caption">
-                <h5>@item.Name</h5>
-                <p>
-                    @item.Description
-                </p>
+        <li class="span3">
+            <div class="thumbnail">
+                <a href="@url"><img src="@(Configuration["BaseAddress"]+folder+@item.ThumbnailImage)" alt="@item.Name" /></a>
+                <div class="caption">
+                    <h5>@item.Name</h5>
+                    <p>
+                        @item.Description
+                    </p>
 
-                <h4 style="text-align:center">
-                    <a class="btn" href="url"> 
-                        <i class="icon-zoom-in"></i>
-                    </a> 
-                    <a class="btn" href="#" localize-content>Add to
-                        <i class="icon-shopping-cart"></i>
-                     </a>
-                    <a class="btn btn-primary" href="#">@item.Price</a>
-                </h4>
+                    <h4 style="text-align:center">
+                        <a class="btn" href="url">
+                            <i class="icon-zoom-in"></i>
+                        </a>
+                        <a class="btn" href="#" localize-content>
+                            Add to
+                            <i class="icon-shopping-cart"></i>
+                        </a>
+                        <a class="btn btn-primary" href="#">@item.Price</a>
+                    </h4>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
     }
 </ul>
