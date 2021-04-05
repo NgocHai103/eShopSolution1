@@ -2,6 +2,7 @@
 @model ProductCategoryViewModel
 @inject LazZiya.ExpressLocalization.ISharedCultureLocalizer _loc;
 @{
+    
     ViewData["Title"] = Model.Category.Name+(Model.Product.PageIndex==1?"":" - " +_loc["Page"]+" "+Model.Product.PageIndex);
     ViewData["Description"] = Model.Category.Name + (Model.Product.PageIndex == 1 ? "" : " - " + _loc["Page"] + " " + Model.Product.PageIndex);
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -66,8 +67,8 @@
                             <input type="checkbox">  Adds product to compair
                         </label><br />
 
-                        <a href="product_details.html" class="btn btn-large btn-primary"><localize> Add to</localize> <i class=" icon-shopping-cart"></i></a>
-                        <a href="product_details.html" class="btn btn-large"><i class="icon-zoom-in"></i></a>
+                        <a href="@url" class="btn btn-large btn-primary"><localize> Add to</localize> <i class=" icon-shopping-cart"></i></a>
+                        <a href="@url" class="btn btn-large"><i class="icon-zoom-in"></i></a>
 
                     </form>
                 </div>
@@ -86,7 +87,7 @@
                 var url = $"/{culture.Name}/{_loc["ProductUrl"]}/{item.Id}";
                 <li class="span3">
                     <div class="thumbnail">
-                        <a href="product_details.html"><img src="@(Configuration["BaseAddress"]+folder+@item.ThumbnailImage)" alt="@item.Name" /></a>
+                        <a href="@url"><img src="@(Configuration["BaseAddress"]+folder+@item.ThumbnailImage)" alt="@item.Name" /></a>
                         <div class="caption">
                             <h5>@item.Name</h5>
                             <p>
@@ -107,16 +108,5 @@
         <hr class="soft" />
     </div>
 </div>
-
-<div class="pagination">
-    <ul>
-        <li><a href="#">&lsaquo;</a></li>
-        <li><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">...</a></li>
-        <li><a href="#">&rsaquo;</a></li>
-    </ul>
-</div>
+@await Component.InvokeAsync("Pager",Model.Product)
 <br class="clr" />

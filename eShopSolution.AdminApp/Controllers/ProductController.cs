@@ -28,7 +28,7 @@ namespace eShopSolution.AdminApp.Controllers
             _categoryApiClient = categoryApiClient;
         }
 
-        public async Task<IActionResult> Index(string keyword, int? categoryId, int pageIndex = 1, int pageSize = 1)
+        public async Task<IActionResult> Index(string keyword, int? categoryId, int pageIndex = 1, int pageSize = 10)
         {
             //var user = User.Identity.Name;
             var defaultLanguageId = HttpContext.Session.GetString(SystemConstants.AppSettings.DefaultLanguageId);
@@ -92,6 +92,29 @@ namespace eShopSolution.AdminApp.Controllers
                 SeoTitle = product.SeoTitle
             };
             return View(editVm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            return View(new ProductDeleteRequest() { 
+                Id = id
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(ProductDeleteRequest request)
+        {
+            if(!ModelState.IsValid)
+                return View(request);
+            var result = await _productApiClient.Delete(request.Id);
+            if (result)
+            {
+                TempData["result"] = "Đã xóa sản phẩm ";
+                return RedirectToAction("Index");
+            }
+            ModelState.AddModelError("", "Xóa không thành công");
+            return View(request);
         }
         [HttpPost]
         [Consumes("multipart/form-data")]
