@@ -1,5 +1,7 @@
 using eShopSolution.ApiIntegration;
+using eShopSolution.ViewModels.System.Users;
 using eShopSolution.WebApp.LocalizationResources;
+using FluentValidation.AspNetCore;
 using LazZiya.ExpressLocalization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -78,6 +80,8 @@ namespace eShopSolution.WebApp
                     options.LoginPath = "/Account/Login";
                     options.AccessDeniedPath = "/User/Forbidden";
                 });
+            services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());//02
+
             services.AddTransient<ISlideApiClient, SlideApiClient>();
             services.AddTransient<IProductApiClient, ProductApiClient>();
             services.AddTransient<ICategoryApiClient, CategoryApiClient>();

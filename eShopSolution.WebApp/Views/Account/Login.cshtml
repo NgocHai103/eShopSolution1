@@ -1,4 +1,4 @@
-﻿
+﻿@model eShopSolution.ViewModels.System.Users.LoginRequest
 @{
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="controls">
-                    <button type="submit" class="btn block">Create Your Account</button>
+                    <a href="/@culture/Account/Register" class="btn block">Create Your Account</a>
                 </div>
             </form>
         </div>
@@ -38,13 +38,15 @@
                 <div class="control-group">
                     <label class="control-label" for="inputEmail1">Email</label>
                     <div class="controls">
-                        <input class="span3" type="text" id="inputEmail1" name="UserName" placeholder="Email">
+                        <input class="span3" type="text" asp-for="UserName"  placeholder="Email">
+                        <span asp-validation-for="UserName" class="text-error"></span>
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="inputPassword1">Password</label>
                     <div class="controls">
-                        <input type="password" class="span3" id="inputPassword1" name="Password" placeholder="Password">
+                        <input type="password" class="span3" asp-for="Password" placeholder="Password">
+                        <span asp-validation-for="Password" class="text-error"></span>
                     </div>
                 </div>
                 <div class="control-group">
