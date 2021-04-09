@@ -243,7 +243,8 @@ namespace eShopSolution.Application.Catalog.Products
             var product = await _context.Products.FindAsync(productId);
             var productTranslation = await _context.ProductTranslations.FirstOrDefaultAsync(x => x.ProductId == productId
             && x.LanguageId == languageId);
-            var productImages = await _context.ProductImages.Where(x => x.Id == productId && x.IsDefault == true).FirstOrDefaultAsync();
+            var productImages = await _context.ProductImages.ToArrayAsync<ProductImage>();
+            var productImage =  productImages.Where(x => x.ProductId == productId && x.IsDefault == true).FirstOrDefault();
 
             var categories = await (from c in _context.Categories
                                     join ct in _context.CategoryTranslations on c.Id equals ct.CategoryId
@@ -267,7 +268,7 @@ namespace eShopSolution.Application.Catalog.Products
                 Stock = product.Stock,
                 ViewCount = product.ViewCount,
                 Categories = categories,
-                ThumbnailImage=productImages!=null?productImages.ImagePath:"no-image.jpg"
+                ThumbnailImage=productImage!=null?productImage.ImagePath:"no-image.jpg"
             };
         }
 
