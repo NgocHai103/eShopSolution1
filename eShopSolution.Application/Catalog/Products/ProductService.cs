@@ -17,6 +17,7 @@ using System.IO;
 using eShopSolution.Application.Common;
 using eShopSolution.ViewModels.Catalog.ProductImages;
 using eShopSolution.Utilities.Constants;
+using eShopSolution.ViewModels.Catalog.Categories;
 
 namespace eShopSolution.Application.Catalog.Products
 {
@@ -129,7 +130,7 @@ namespace eShopSolution.Application.Catalog.Products
                         from c in picc.DefaultIfEmpty()
                         join pi in _context.ProductImages on p.Id equals pi.ProductId into ppi 
                         from pi in ppi.DefaultIfEmpty()
-                        where pt.LanguageId == request.LanguageId &&pi.IsDefault == true
+                        where pt.LanguageId == request.LanguageId 
                         select new { p, pt, pic ,pi};
             if (!string.IsNullOrEmpty(request.Keyword))
             {
@@ -213,6 +214,25 @@ namespace eShopSolution.Application.Catalog.Products
                     thumbnailImage.ImagePath = await this.SaveFile(request.ThumbnailImage);
                     _context.ProductImages.Update(thumbnailImage);
                 }
+                else
+                {
+                    //save image
+                    if (request.ThumbnailImage != null)
+                    {
+                        product.ProductImages = new List<ProductImage>()
+                        {
+                            new ProductImage()
+                            {
+                                Caption = "Thumbnail image",
+                                DateCreated = DateTime.Now,
+                                FileSize = request.ThumbnailImage.Length,
+                                ImagePath = await this.SaveFile(request.ThumbnailImage),
+                                IsDefault = true,
+                                SortOrder = 1
+                            }
+                        };
+                    }
+                }    
             }
             var result =  await _context.SaveChangesAsync();
             if (result==0)

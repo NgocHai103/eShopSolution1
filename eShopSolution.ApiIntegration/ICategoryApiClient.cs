@@ -11,5 +11,9 @@ namespace eShopSolution.ApiIntegration
     {
         Task<List<CategoryVm>> GetAll(string languageId);
         Task<CategoryVm> GetById(string languageId,int id);
+        public Task<ApiResult<PageResult<CategoryVm>>> GetPaging(GetCategoryPagingRequest request);
+        public Task<ApiResult<bool>> Create(CategoryCreateRequest request);
+        public Task<ApiResult<bool>> Update(CategoryEditRequest request);
+        Task<bool> Delete(int id);
     }
 }

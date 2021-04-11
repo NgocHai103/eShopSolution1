@@ -3,11 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using eShopSolution.ApiIntegration;
 using eShopSolution.Utilities.Constants;
+using eShopSolution.ViewModels.Catalog.Categories;
 using eShopSolution.ViewModels.Catalog.Products;
 using eShopSolution.ViewModels.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 
 namespace eShopSolution.AdminApp.Controllers
@@ -42,6 +44,7 @@ namespace eShopSolution.AdminApp.Controllers
             };
             var data = await _productApiClient.GetPaging(request);
             ViewBag.Keyword = keyword;
+            TempData["pageIndex"] = pageIndex;
             var categories = await _categoryApiClient.GetAll(defaultLanguageId);
             ViewBag.Categories = categories.Select(x => new SelectListItem()
             {
@@ -150,7 +153,7 @@ namespace eShopSolution.AdminApp.Controllers
             if (result.IsSuccessed)
             {
                 TempData["result"] = "Cập nhật danh mục thành công";
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Product", new { @pageIndex = TempData["pageIndex"] });
             }
 
             ModelState.AddModelError("", result.Message);

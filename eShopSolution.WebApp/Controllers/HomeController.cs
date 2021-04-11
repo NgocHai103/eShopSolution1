@@ -12,6 +12,8 @@ using LazZiya.ExpressLocalization;
 using eShopSolution.ApiIntegration;
 using System.Globalization;
 using eShopSolution.Utilities.Constants;
+using eShopSolution.ViewModels.Common;
+using eShopSolution.ViewModels.Catalog.Products;
 
 namespace eShopSolution.WebApp.Controllers
 {
@@ -37,10 +39,9 @@ namespace eShopSolution.WebApp.Controllers
             var viewModel = new HomeViewModel
             {
                 Slides = await _slideApiClient.GetAll(),
-               FeaturedProducts = await _productApiClient.GetFeaturedProducts(culture, SystemConstants.ProductSettings.NumberOfFeaturedProducts),
+                FeaturedProducts = await _productApiClient.GetFeaturedProducts(culture, SystemConstants.ProductSettings.NumberOfFeaturedProducts),
                 LastestProducts = await _productApiClient.GetLastestProducts(culture, SystemConstants.ProductSettings.NumberOfLastestProducts)
             };
-
             return View(viewModel);
         }
 

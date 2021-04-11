@@ -1,4 +1,5 @@
 ﻿using eShopSolution.ViewModels.Catalog.Products;
+using eShopSolution.ViewModels.Common;
 using eShopSolution.ViewModels.Utilities.Slides;
 using System;
 using System.Collections.Generic;
