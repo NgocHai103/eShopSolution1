@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>28554a8e-5a94-44a1-9011-1129c3d13702</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eShopSolution.Application\eShopSolution.Application.csproj" />
-    <ProjectReference Include="..\eShopSolution.Data\eShopSolution.Data.csproj" />
     <ProjectReference Include="..\eShopSolution.Utilities\eShopSolution.Utilities.csproj" />
     <ProjectReference Include="..\eShopSolution.ViewModels\eShopSolution.ViewModels.csproj" />
   </ItemGroup>

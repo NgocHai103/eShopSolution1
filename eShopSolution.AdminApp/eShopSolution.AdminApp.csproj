@@ -1,20 +1,35 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>360103d1-b155-46e3-8e56-1f3d9bc884da</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Services\**" />
+    <Compile Remove="Views\Home\Components\**" />
+    <Content Remove="Services\**" />
+    <Content Remove="Views\Home\Components\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <EmbeddedResource Remove="Views\Home\Components\**" />
+    <None Remove="Services\**" />
+    <None Remove="Views\Home\Components\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Logging" Version="6.5.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.5.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Logging" Version="6.10.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.10.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.5.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\eShopSolution.ApiIntegration\eShopSolution.ApiIntegration.csproj" />
+    <ProjectReference Include="..\eShopSolution.Application\eShopSolution.Application.csproj" />
+    <ProjectReference Include="..\eShopSolution.Utilities\eShopSolution.Utilities.csproj" />
     <ProjectReference Include="..\eShopSolution.ViewModels\eShopSolution.ViewModels.csproj" />
   </ItemGroup>
 

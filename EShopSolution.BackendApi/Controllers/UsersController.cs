@@ -26,35 +26,74 @@ namespace EShopSolution.BackendApi.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var resultToken = await _userService.Authencate(request);
-            if(string.IsNullOrEmpty(resultToken))
+            var result = await _userService.Authencate(request);
+            if(result.IsSuccessed)
             {
-                return BadRequest("Username or passwork is incorrect.");
+                return BadRequest(result);
             }
             else
             {
               //  HttpContext.Session.SetString("Token",resultToken);
             }
-            return Ok(resultToken);
+            return Ok(result);
         }
         [HttpPost]
         [AllowAnonymous] // don't need add Token
-        public async Task<IActionResult> Register([FromForm] RegisterRequest request)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var resutl = await _userService.Register(request);
-            if (!resutl)
+            if (!resutl.IsSuccessed)
             {
-                return BadRequest("Register is unsuccessful.");
+                return BadRequest(resutl);
             }
-            return Ok();
+            return Ok(resutl);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id,[FromBody] UserUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var resutl = await _userService.Update(id,request);
+            if (!resutl.IsSuccessed)
+            {
+                return BadRequest(resutl);
+            }
+            return Ok(resutl);
+        }
+
+        [HttpPut("{id}/roles")]
+        public async Task<IActionResult> RoleAssign(Guid id, [FromBody] RoleAssignRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var resutl = await _userService.RoleAssign(id, request);
+            if (!resutl.IsSuccessed)
+            {
+                return BadRequest(resutl);
+            }
+            return Ok(resutl);
         }
         [HttpGet("paging")]
         public async Task<IActionResult> GetPaging([FromQuery] GetUserPagingRequest request)
         {
             var users = await _userService.GetUsersPaging(request);
             return Ok(users);
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var user = await _userService.GetById(id);
+            return Ok(user);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var resutl = await _userService.Delete(id);
+            return Ok(resutl);
         }
     }
 }

@@ -4,9 +4,8 @@ using System.Text;
 
 namespace eShopSolution.ViewModels.Common
 {
-    public class PageResult<T>
+    public class PageResult<T>: PagedResultBase
     {
         public List<T> Items { set; get; }
-        public int TotalRecord { set; get; }
     }
 }

@@ -1,9 +1,10 @@
-using eShopSolution.AdminApp.Services;
+using eShopSolution.ApiIntegration;
 using eShopSolution.ViewModels.System.Users;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,7 +32,7 @@ namespace eShopSolution.AdminApp
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = "/User/Login";
+                    options.LoginPath = "/Login/Index";
                     options.AccessDeniedPath = "/User/Forbidden";
                 });
            // services.AddDistributedMemoryCache();
@@ -40,10 +41,15 @@ namespace eShopSolution.AdminApp
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
+            services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
             services.AddControllersWithViews();
             services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());//02
             IMvcBuilder builder = services.AddRazorPages();
             services.AddTransient<IUserApiClient, UserApiClient>();
+            services.AddTransient<IRoleApiClient, RoleApiClient>();
+            services.AddTransient<ILanguageApiClient, LanguageApiClient>();
+            services.AddTransient<IProductApiClient, ProductApiClient>();
+            services.AddTransient<ICategoryApiClient, CategoryApiClient>();
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 #if DEBUG
             if(environment == Microsoft.AspNetCore.Hosting.EnvironmentName.Development)
