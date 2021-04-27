@@ -109,20 +109,33 @@ namespace eShopSolution.Application.Catalog.Posts
                     Description = x.pt.Description,
                     Content = x.pt.Content,
                     LanguageId = x.pt.LanguageId,
-                    Images =  x.pi.ImagePath
+                    Images =  x.pi.ImagePath!=null?new List<string> { x.pi.ImagePath }: new List<string> { }
                 })
                 .Distinct()
                 .ToListAsync();
 
-           
+            var dataGroupById = data.GroupBy(x => x.Id);
+            List<PostVm> result = new List<PostVm>();
+            foreach(var group in dataGroupById)
+            {
+                foreach (var item in group)
+                {
+                    var temp = result.Find(x => x.Id == item.Id);
+                    if (temp == null)
+                        result.Add(item);
+                    else if(item.Images.Count > 0)
+                        temp.Images.Add(item.Images.First());
 
-            var pageResult = new ApiSuccessResult<PageResult<PostVm>>(
+                }
+            }
+
+             var pageResult = new ApiSuccessResult<PageResult<PostVm>>(
                 new PageResult<PostVm>()
                 {
                     TotalRecords = totalRow,
                     PageIndex = request.PageIndex,
                     PageSize = request.PageSize,
-                    Items = data
+                    Items = result
                 });
             return pageResult;
         }

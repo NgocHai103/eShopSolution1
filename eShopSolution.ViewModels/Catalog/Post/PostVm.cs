@@ -14,7 +14,7 @@ namespace eShopSolution.ViewModels.Catalog.Post
         public string Description { set; get; }
         public string Content { set; get; }
 
-        public string Images { set; get; }
+        public List<string> Images { set; get; } = new List<string>();
         public string LanguageId { set; get; }
     }
 }
