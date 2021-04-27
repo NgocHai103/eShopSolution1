@@ -125,6 +125,10 @@
     <value>sản phẩm có sẵn</value>
     <comment>/Product/Category</comment>
   </data>
+  <data name="Categorys" xml:space="preserve">
+    <value>Danh mục</value>
+    <comment>Home/Index</comment>
+  </data>
   <data name="categoryUrl" xml:space="preserve">
     <value>danh-muc</value>
     <comment>Layouts</comment>
@@ -148,6 +152,10 @@
   <data name="Home" xml:space="preserve">
     <value>Trang chủ</value>
     <comment>Common</comment>
+  </data>
+  <data name="Itemes in your cart" xml:space="preserve">
+    <value>Sản phẩm trong giỏ</value>
+    <comment>Home/Index</comment>
   </data>
   <data name="Latest Products" xml:space="preserve">
     <value>Sản phẩm mới  nhất</value>

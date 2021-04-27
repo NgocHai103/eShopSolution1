@@ -62,7 +62,9 @@ namespace EShopSolution.BackendApi
             //registor dll the same
             services.AddControllers().AddFluentValidation(fv=>fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());//02
             //services.
-
+            services.AddCors(options => options.AddDefaultPolicy(
+                builder=>builder.AllowAnyOrigin().AllowAnyHeader()
+                ));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -144,8 +146,9 @@ namespace EShopSolution.BackendApi
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseRouting();
-
+            app.UseCors();
             app.UseAuthorization();
+            
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -157,6 +160,8 @@ namespace EShopSolution.BackendApi
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                //endpoints.MapControllers()
+                //.RequireCors();
             });
         }
     }

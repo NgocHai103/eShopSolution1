@@ -125,6 +125,10 @@
     <value>availavle products</value>
     <comment>/Product/Category</comment>
   </data>
+  <data name="Categorys" xml:space="preserve">
+    <value>Categorys</value>
+    <comment>Home/index</comment>
+  </data>
   <data name="categoryUrl" xml:space="preserve">
     <value>categories</value>
     <comment>Layouts</comment>
@@ -148,6 +152,10 @@
   <data name="Home" xml:space="preserve">
     <value>Home</value>
     <comment>Common</comment>
+  </data>
+  <data name="Itemes in your cart" xml:space="preserve">
+    <value>Itemes in your cart</value>
+    <comment>Home/index</comment>
   </data>
   <data name="Latest Products" xml:space="preserve">
     <value>Latest Products</value>
