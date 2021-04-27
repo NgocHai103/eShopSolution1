@@ -23,5 +23,9 @@ namespace eShopSolution.Utilities.Constants
         {
             public const string NA = "N/A";
         }
+        public class PostConstants
+        {
+            public const string NA = "N/A";
+        }
     }
 }
