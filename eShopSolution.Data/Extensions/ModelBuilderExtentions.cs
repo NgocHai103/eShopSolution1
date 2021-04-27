@@ -47,15 +47,21 @@ namespace eShopSolution.Data.Extensions
                     );
 
             modelBuilder.Entity<Product>().HasData(
-           new Product()
-           {
-               Id = 1,
-               DateCreated = DateTime.Now,
-               OriginalPrice = 100000,
-               Price = 200000,
-               Stock = 0,
-               ViewCount = 0,
-           });
+               new Product()
+               {
+                   Id = 1,
+                   DateCreated = DateTime.Now,
+                   OriginalPrice = 100000,
+                   Price = 200000,
+                   Stock = 0,
+                   ViewCount = 0,
+               });
+            modelBuilder.Entity<Post>().HasData(
+             new Post()
+             {
+                 Id = 1,
+                 DateCreated = DateTime.Now
+             });
             modelBuilder.Entity<ProductTranslation>().HasData(
                  new ProductTranslation()
                  {
@@ -81,6 +87,25 @@ namespace eShopSolution.Data.Extensions
                         Details = "Viet Tien Men T-Shirt",
                         Description = "Viet Tien Men T-Shirt"
                     });
+            modelBuilder.Entity<PostTranslation>().HasData(
+                new PostTranslation()
+                {
+                    Id = 1,
+                    PostId = 1,
+                    Name = "Áo sơ mi của tương lai",
+                    LanguageId = "vi",
+                    Content = "Áo sơ mi nam trắng Việt Tiến",
+                    Description = "Áo sơ mi nam trắng Việt Tiến"
+                },
+                   new PostTranslation()
+                   {
+                       Id = 2,
+                       PostId = 1,
+                       Name = "T-Shirt of feature",
+                       LanguageId = "en",
+                       Content = "Viet Tien Men T-Shirt",
+                       Description = "Viet Tien Men T-Shirt"
+                   });
             modelBuilder.Entity<ProductInCategory>().HasData(
                 new ProductInCategory() { ProductId = 1, CategoryId = 1 }
                 );

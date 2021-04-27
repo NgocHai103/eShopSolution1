@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace eShopSolution.Data.Migrations
 {
-    public partial class UpdateImages1 : Migration
+    public partial class UpdateMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,14 +12,14 @@ namespace eShopSolution.Data.Migrations
                 keyColumn: "Id",
                 keyValue: new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
                 column: "ConcurrencyStamp",
-                value: "81672cc1-acbd-4880-86ce-4d73b4840b81");
+                value: "f7f664a5-4320-4f43-8a20-c8dedc60d709");
 
             migrationBuilder.UpdateData(
                 table: "AppUsers",
                 keyColumn: "Id",
                 keyValue: new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                 columns: new[] { "ConcurrencyStamp", "PasswordHash" },
-                values: new object[] { "978e36c4-f0ba-4196-9dc8-875c70703cde", "AQAAAAEAACcQAAAAELgXtVTi4+AMuKlYCIs6uDK2pW5c4VvvY5qD/fBsyubXq6wVgHUs0GXr78arDHNRRg==" });
+                values: new object[] { "30830f9a-8744-4233-905c-51db77c752be", "AQAAAAEAACcQAAAAEIuVppdkETfwAqnJfsuEKgGytUycI6ur6e/vuNSv6SzxdMYtQKdtKVzG+CopP6lvIA==" });
 
             migrationBuilder.UpdateData(
                 table: "Categories",
@@ -36,11 +36,18 @@ namespace eShopSolution.Data.Migrations
                 value: 1);
 
             migrationBuilder.UpdateData(
+                table: "Posts",
+                keyColumn: "Id",
+                keyValue: 1,
+                column: "DateCreated",
+                value: new DateTime(2021, 4, 27, 14, 19, 28, 80, DateTimeKind.Local).AddTicks(9782));
+
+            migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTime(2021, 4, 2, 22, 11, 2, 584, DateTimeKind.Local).AddTicks(4451));
+                value: new DateTime(2021, 4, 27, 14, 19, 28, 80, DateTimeKind.Local).AddTicks(2794));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -50,14 +57,14 @@ namespace eShopSolution.Data.Migrations
                 keyColumn: "Id",
                 keyValue: new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
                 column: "ConcurrencyStamp",
-                value: "ad837d56-8b11-43f3-8349-5e31fe34725f");
+                value: "6c31d894-3c9a-4cb4-817d-49cca1286c0f");
 
             migrationBuilder.UpdateData(
                 table: "AppUsers",
                 keyColumn: "Id",
                 keyValue: new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                 columns: new[] { "ConcurrencyStamp", "PasswordHash" },
-                values: new object[] { "ef1b38dc-9057-4ba4-9da4-9fadb1e7a6c6", "AQAAAAEAACcQAAAAEB3q+Meciw/bZrBZbVrtotijx3ijgJ3P+xCZfQDATIzS8pQiJaOpWAbZ1R4ip3Af+g==" });
+                values: new object[] { "ad871171-909c-4a3b-a1e1-477b60122f94", "AQAAAAEAACcQAAAAEIwCdzxqfPFrpEvHB90nNsS/rXwVaYPpQQx+42fxgn9Zvqrd3cZYRrYznXJuDWOeiA==" });
 
             migrationBuilder.UpdateData(
                 table: "Categories",
@@ -74,11 +81,18 @@ namespace eShopSolution.Data.Migrations
                 value: 1);
 
             migrationBuilder.UpdateData(
+                table: "Posts",
+                keyColumn: "Id",
+                keyValue: 1,
+                column: "DateCreated",
+                value: new DateTime(2021, 4, 27, 14, 12, 57, 230, DateTimeKind.Local).AddTicks(2964));
+
+            migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTime(2021, 4, 2, 22, 7, 27, 985, DateTimeKind.Local).AddTicks(1948));
+                value: new DateTime(2021, 4, 27, 14, 12, 57, 229, DateTimeKind.Local).AddTicks(5717));
         }
     }
 }

@@ -32,15 +32,17 @@
                                         <div class="form-group">
                                             <label class="small mb-1">Tài khoản</label>
                                             <input class="form-control py-4" asp-for="UserName" type="text" placeholder="Nhập tài khoản" />
+                                            <span asp-validation-for="UserName" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
                                             <label class="small mb-1">Mật khẩu</label>
                                             <input class="form-control py-4" asp-for="Password" type="password" placeholder="Nhập mật khẩu" />
+                                            <span asp-validation-for="Password" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox">
-                                                <input class="custom-control-input" asp-for="RememberMe" type="checkbox" />
-                                                <label class="custom-control-label">Nhớ mật khẩu</label>
+                                                <input class="" asp-for="RememberMe" type="checkbox" />
+                                                <label  class="">Nhớ mật khẩu</label>
                                             </div>
                                         </div>
                                         <div asp-validation-summary="All" class="text-danger"></div>

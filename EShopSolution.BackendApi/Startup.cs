@@ -41,6 +41,14 @@ namespace EShopSolution.BackendApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin().AllowAnyHeader();
+                    });
+            });
             services.AddDbContext<EShopDBContext>(b =>
                 b.UseSqlServer(Configuration.GetConnectionString(SystemConstants.MainConnectionString)));
             services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<EShopDBContext>().AddDefaultTokenProviders();
@@ -62,6 +70,7 @@ namespace EShopSolution.BackendApi
             //registor dll the same
             services.AddControllers().AddFluentValidation(fv=>fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());//02
             //services.
+
 
             services.AddSwaggerGen(c =>
             {
@@ -144,7 +153,7 @@ namespace EShopSolution.BackendApi
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseRouting();
-
+            app.UseCors();
             app.UseAuthorization();
             app.UseSwagger();
             app.UseSwaggerUI(c =>

@@ -27,6 +27,11 @@ namespace eShopSolution.Data.EF
             modelBuilder.ApplyConfiguration(new ProductInCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
 
+            modelBuilder.ApplyConfiguration(new ProductColorConfiguration());
+            modelBuilder.ApplyConfiguration(new PostConfiguration());
+            modelBuilder.ApplyConfiguration(new PostTranslationConfiguration());
+            modelBuilder.ApplyConfiguration(new PostImageConfiguration());
+
             modelBuilder.ApplyConfiguration(new OrderDetailConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryTranslationConfiguration());
             modelBuilder.ApplyConfiguration(new ContactConfiguration());
@@ -76,6 +81,10 @@ namespace eShopSolution.Data.EF
         public DbSet<Transaction> Transactions { get; set; }
 
         public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<ProductColor> ProductColors { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<PostTranslation> PostTranslations { get; set; }
+        public DbSet<PostImage> PostImages { get; set; }
 
         public DbSet<Slide> Slides { get; set; }
     }
