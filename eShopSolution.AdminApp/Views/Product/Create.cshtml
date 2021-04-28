@@ -7,15 +7,16 @@
 @section Scripts{
     <script src="https://cdn.ckeditor.com/ckeditor5/27.0.0/classic/ckeditor.js"></script>
     <script>
-    ClassicEditor
-    .create( document.querySelector( '#txt_details' ), {
+    ClassicEditor.create(document.querySelector('#txt_details'), {
+
     } )
     .then( editor => {
     window.editor = editor;
     } )
     .catch( err => {
     console.error( err.stack );
-    } );
+        } );
+      
     </script>
 }
 <div class="container-fluid">

@@ -5,10 +5,13 @@ using eShopSolution.Utilities.Constants;
 using eShopSolution.Utilities.Exceptions;
 using eShopSolution.ViewModels.Catalog.Post;
 using eShopSolution.ViewModels.Common;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,6 +26,14 @@ namespace eShopSolution.Application.Catalog.Posts
             _context = context;
             _storageService = storageService;
         }
+        private async Task<string> SaveFile(IFormFile file)
+        {
+            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
+            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
+            return fileName;
+        }
+
         public async Task<ApiResult<bool>> Create(PostCreateRequest request)
         {
             var languages = _context.Languages;
@@ -140,9 +151,26 @@ namespace eShopSolution.Application.Catalog.Posts
             return pageResult;
         }
 
-        public Task<PostVm> GetById(int PostId, string languageId)
+        public async Task<PostVm> GetById(int PostId, string languageId)
         {
-            throw new NotImplementedException();
+            var post = await _context.Posts.FindAsync(PostId);
+
+            var postTranslation = await _context.PostTranslations.FirstOrDefaultAsync(x => x.PostId == PostId
+            && x.LanguageId == languageId);
+            var postImages = await _context.PostImages.ToArrayAsync<PostImage>();
+            var postImage = postImages.Where(x => x.PostId == PostId && x.IsDefault == true).Select(x=>x.ImagePath).ToList();
+
+       
+            return new PostVm()
+            {
+                Id = post.Id,
+                DateCreated = post.DateCreated,
+                Description = postTranslation != null ? postTranslation.Description : null,
+                LanguageId = postTranslation.LanguageId,
+                Content = postTranslation != null ? postTranslation.Content : null,
+                Name = postTranslation != null ? postTranslation.Name : null,
+                Images = postImage.Count > 0 ? postImage : new List<string> { "no-image.jpg" }
+            };
         }
 
         public async Task<ApiResult<bool>> Update(int PostId, PostUpdateRequest request)
@@ -188,6 +216,11 @@ namespace eShopSolution.Application.Catalog.Posts
             if (result == 0)
                 return new ApiErrorResult<bool>("Bài viết chưa có thay đổi");
             return new ApiSuccessResult<bool>();
+        }
+
+        public async Task<string> UploadImage(IFormFile request)
+        {
+            return await this.SaveFile(request);
         }
     }
 }

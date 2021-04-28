@@ -1,0 +1,85 @@
+﻿@model eShopSolution.ViewModels.Catalog.Post.PostCreateRequest
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts{
+    <script src="https://cdn.ckeditor.com/ckeditor5/27.0.0/classic/ckeditor.js"></script>
+    <script>
+        //var link = { Configuration["BaseAddress"]};
+        ClassicEditor
+            .create(document.querySelector('#txt_details'), {
+                toolbar: [
+                    'heading',
+                    '|',
+                    'alignment',                                                
+                    'bold',
+                    'italic',
+                    'link',
+                    'bulletedList',
+                    'numberedList',
+                    'uploadImage',
+                    'blockQuote',
+                    'undo',
+                    'redo'
+                ],
+                cloudServices: {
+                    // Upload the images to the server using the CKFinder QuickUpload command.
+                    tokenUrl: 'https://localhost:44386/uploadImage',
+                    uploadUrl: 'https://localhost:44386/uploadImage'
+                    
+                }
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(err => {
+                console.error(err.stack);
+            });
+    </script>
+}
+
+<h4>PostCreateRequest</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <textarea id="txt_details" asp-for="Content" rows="30" class="form-control ckeditor"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsActive" class="control-label"></label>
+                <input asp-for="IsActive" class="form-control" />
+                <span asp-validation-for="IsActive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LanguageId" class="control-label"></label>
+                <input asp-for="LanguageId" class="form-control" />
+                <span asp-validation-for="LanguageId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

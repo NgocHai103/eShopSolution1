@@ -50,6 +50,7 @@ namespace eShopSolution.AdminApp
             services.AddTransient<ILanguageApiClient, LanguageApiClient>();
             services.AddTransient<IProductApiClient, ProductApiClient>();
             services.AddTransient<ICategoryApiClient, CategoryApiClient>();
+            services.AddTransient<IPostApiClient, PostApiClient>();
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 #if DEBUG
             if(environment == Microsoft.AspNetCore.Hosting.EnvironmentName.Development)

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using System.Threading.Tasks;
 using eShopSolution.Application.Catalog.Posts;
 using eShopSolution.ViewModels.Catalog.Post;
@@ -60,6 +60,39 @@ namespace EShopSolution.BackendApi.Controllers
                 return BadRequest();//return 400 error
 
             return Ok();
+        }
+        [HttpGet("{postId}/{languageId}")]
+        public async Task<IActionResult> GetById(int postId, string languageId)
+        {
+            var post = await _postSevice.GetById(postId, languageId);
+            if (post == null)
+                return BadRequest("Cannot find product");
+            return Ok(post);
+        }
+        [HttpPost("/uploadImage")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Create(IFormFile file)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _postSevice.UploadImage(file);
+            var a = new JsonResult(new { path = result });
+            return Ok(a);
+        }
+        [HttpGet("/uploadImage")]
+        public async Task<IActionResult> GetTokenImage()
+        {
+
+            var token = new JwtSecurityToken("Tokens:Issuer",
+                "Tokens:Issuer",
+                expires: DateTime.Now.AddHours(3));
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(new JwtSecurityTokenHandler().WriteToken(token));
         }
     }
 }
