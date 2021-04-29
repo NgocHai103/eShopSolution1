@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace eShopSolution.Data.Entities
+namespace eShopSolution.ViewModels.Catalog.PostImages
 {
-    public class PostImage
+    public class PostImageVm
     {
         public int Id { get; set; }
 
@@ -14,8 +14,5 @@ namespace eShopSolution.Data.Entities
 
         public bool IsDefault { get; set; }
 
-        public DateTime DateCreated { get; set; }
-
-        public long FileSize { get; set; }
     }
 }

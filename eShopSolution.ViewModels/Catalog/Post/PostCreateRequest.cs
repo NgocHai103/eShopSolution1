@@ -12,6 +12,7 @@ namespace eShopSolution.ViewModels.Catalog.Post
         public string Name { set; get; }
         public string Description { set; get; }
         public string Content { set; get; }
+        public List<string> Images { set; get; }
         public bool? IsActive { get; set; }
         public string LanguageId { set; get; }
     }

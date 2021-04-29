@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using eShopSolution.Application.Catalog.Posts;
 using eShopSolution.ViewModels.Catalog.Post;
+using eShopSolution.ViewModels.Catalog.PostImages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -69,19 +70,18 @@ namespace EShopSolution.BackendApi.Controllers
                 return BadRequest("Cannot find product");
             return Ok(post);
         }
-        [HttpPost("/uploadImage")]
+        [HttpPost("uploadImage")]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Create(IFormFile file)
+        public async Task<IActionResult> Create([FromForm] PostImageCreateRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var result = await _postSevice.UploadImage(file);
-            var a = new JsonResult(new { path = result });
-            return Ok(a);
+            var result = await _postSevice.UploadImage(request);
+            return Ok(new JsonResult(new { path = result }));
         }
-        [HttpGet("/uploadImage")]
+        [HttpGet("/getImage")]
         public async Task<IActionResult> GetTokenImage()
         {
 
