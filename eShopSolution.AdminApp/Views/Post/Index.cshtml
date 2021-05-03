@@ -1,6 +1,7 @@
 ﻿@using eShopSolution.ViewModels.Common;
 @model PageResult<eShopSolution.ViewModels.Catalog.Post.PostVm>
 
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -97,7 +98,7 @@
                                     @Html.DisplayFor(modelItem => item.LanguageId)
                                 </td>
                                 <td>
-                                    @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                                     @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                                     @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
                                 </td>

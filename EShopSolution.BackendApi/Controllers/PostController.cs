@@ -70,6 +70,15 @@ namespace EShopSolution.BackendApi.Controllers
                 return BadRequest("Cannot find product");
             return Ok(post);
         }
+
+        //localhost:port/api/post/images?pageIndex=1$pageSize=10&CategoryId=xx 
+        [HttpGet("image")]
+        public async Task<IActionResult> GetPaging([FromQuery] GetPostImageRequest request)
+        {
+            var products = await _postSevice.GetAllImage(request);
+            return Ok(products);
+        }
+
         [HttpPost("uploadImage")]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> Create([FromForm] PostImageCreateRequest request)
@@ -81,18 +90,18 @@ namespace EShopSolution.BackendApi.Controllers
             var result = await _postSevice.UploadImage(request);
             return Ok(new JsonResult(new { path = result }));
         }
-        [HttpGet("/getImage")]
-        public async Task<IActionResult> GetTokenImage()
-        {
+        //[HttpGet("/getImage")]
+        //public async Task<IActionResult> GetTokenImage()
+        //{
 
-            var token = new JwtSecurityToken("Tokens:Issuer",
-                "Tokens:Issuer",
-                expires: DateTime.Now.AddHours(3));
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            return Ok(new JwtSecurityTokenHandler().WriteToken(token));
-        }
+        //    var token = new JwtSecurityToken("Tokens:Issuer",
+        //        "Tokens:Issuer",
+        //        expires: DateTime.Now.AddHours(3));
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+        //    return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+        //}
     }
 }

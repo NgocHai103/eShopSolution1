@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace eShopSolution.ApiIntegration
 {
-    public class PostApiClient : BaseApiClient,IPostApiClient
+    public class PostApiClient : BaseApiClient, IPostApiClient
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHttpClientFactory _httpClientFactory;
@@ -36,6 +36,13 @@ namespace eShopSolution.ApiIntegration
         public Task<bool> Delete(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ApiResult<PageResult<PostImageVm>>> GetAllImage(GetPostImageRequest request)
+        {
+            var url = $"/api/post/image?pageIndex=" +
+             $"{request.PageIndex}&pageSize={request.PageSize}&keyword={request.Keyword}";
+            return await GetAsync<ApiResult<PageResult<PostImageVm>>>(url);
         }
 
         public async Task<PostVm> GetById(int id, string languageId)

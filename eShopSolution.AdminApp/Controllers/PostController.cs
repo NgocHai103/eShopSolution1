@@ -109,5 +109,17 @@ namespace eShopSolution.AdminApp.Controllers
             ModelState.AddModelError("", result.Message);
             return View(request);
         }
+
+        public async Task<IActionResult> Images(string keyword, int pageIndex = 1, int pageSize = 10)
+        {
+            var result = await _postApiClient.GetAllImage(new GetPostImageRequest() { 
+                Keyword=keyword,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            });
+
+           // ModelState.AddModelError("", result.Message);
+           return View(result.ResultObj);
+        }
     }
 }

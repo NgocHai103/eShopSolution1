@@ -227,6 +227,11 @@ namespace eShopSolution.Application.Catalog.Posts
             image.FileSize = request.ImageFile.Length;
             image.ImagePath = ImagePath;
             image.IsDefault = request.IsDefault;
+
+            _context.PostImages.Add(image);
+            var result = await  _context.SaveChangesAsync();
+            if(result == 0)
+                return "";
             return image.ImagePath;
         }
 
