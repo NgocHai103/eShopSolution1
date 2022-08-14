@@ -19,6 +19,7 @@ namespace EShopSolution.BackendApi.Controllers
         {
 
             _postSevice = postSevice;
+            /////////
         }
         [HttpGet("paging")]
         public async Task<IActionResult> GetPaging([FromQuery] GetPostPagingRequest request)
