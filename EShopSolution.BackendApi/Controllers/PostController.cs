@@ -34,7 +34,7 @@ namespace EShopSolution.BackendApi.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
+            }///////
             var result = await _postSevice.Create(request);
             return Ok(result);
         }
