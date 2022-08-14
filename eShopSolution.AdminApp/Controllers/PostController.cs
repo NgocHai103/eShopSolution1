@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using eShopSolution.ApiIntegration;
 using eShopSolution.Utilities.Constants;
 using eShopSolution.ViewModels.Catalog.Post;
+using eShopSolution.ViewModels.Catalog.PostImages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -68,6 +69,7 @@ namespace eShopSolution.AdminApp.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+
             return View();
         }
         [HttpPost]
@@ -85,6 +87,39 @@ namespace eShopSolution.AdminApp.Controllers
 
             ModelState.AddModelError("", result.Message);
             return View(request);
+        }
+        [HttpGet]
+        public IActionResult UpLoadImage()
+        {
+            return View();
+        }
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UpLoadImage([FromForm] PostImageCreateRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View(request);
+            var result = await _postApiClient.UploadImage(request);
+            if (result.IsSuccessed)
+            {
+                TempData["result"] = "Thêm thành công!";
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError("", result.Message);
+            return View(request);
+        }
+
+        public async Task<IActionResult> Images(string keyword, int pageIndex = 1, int pageSize = 10)
+        {
+            var result = await _postApiClient.GetAllImage(new GetPostImageRequest() { 
+                Keyword=keyword,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            });
+
+           // ModelState.AddModelError("", result.Message);
+           return View(result.ResultObj);
         }
     }
 }

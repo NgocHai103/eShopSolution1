@@ -1,4 +1,5 @@
 ﻿using eShopSolution.ViewModels.Catalog.Post;
+using eShopSolution.ViewModels.Catalog.PostImages;
 using eShopSolution.ViewModels.Common;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -16,7 +17,10 @@ namespace eShopSolution.Application.Catalog.Posts
         public Task<int> Delete(int PostId);
         public Task<ApiResult<PageResult<PostVm>>> GetAllPaging(GetPostPagingRequest request);
 
-        public Task<string> UploadImage(IFormFile request);
+        public Task<string> UploadImage(PostImageCreateRequest request);
+
+        public Task<ApiResult<PageResult<PostImageVm>>> GetAllImage(GetPostImageRequest request);
+
         //   Task<int> AddImage(int PostId, PostImageCreateRequest request);
         //  Task<int> RemoveImage(int imageId);
         //  Task<int> UpdateImage(int imageId, PostImageUpdateRequest request);

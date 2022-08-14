@@ -6,45 +6,40 @@
 }
 
 @section Scripts{
-    <script src="https://cdn.ckeditor.com/ckeditor5/27.0.0/classic/ckeditor.js"></script>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
-        //var link = { Configuration["BaseAddress"]};
-        ClassicEditor
-            .create(document.querySelector('#txt_details'), {
-                toolbar: [
-                    'heading',
-                    '|',
-                    'alignment',                                                
-                    'bold',
-                    'italic',
-                    'link',
-                    'bulletedList',
-                    'numberedList',
-                    'uploadImage',
-                    'blockQuote',
-                    'undo',
-                    'redo'
-                ],
-                cloudServices: {
-                    // Upload the images to the server using the CKFinder QuickUpload command.
-                    tokenUrl: 'https://localhost:44386/uploadImage',
-                    uploadUrl: 'https://localhost:44386/uploadImage'
-                    
-                }
-            })
-            .then(editor => {
-                window.editor = editor;
-            })
-            .catch(err => {
-                console.error(err.stack);
-            });
+        tinymce.init({
+            selector: "textarea#txt_details",
+            skin: "bootstrap",
+            plugins: "lists, link, image, media",
+            toolbar:
+                "h1 h2 bold italic strikethrough blockquote bullist numlist backcolor | alignleft aligncenter alignright alignjustify | link image media | removeformat help",
+            menubar: false,
+            setup: editor => {
+                // Apply the focus effect
+                editor.on("init", () => {
+                    editor.getContainer().style.transition =
+                        "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out";
+                });
+                editor.on("focus", () => {
+                    (editor.getContainer().style.boxShadow =
+                        "0 0 0 .2rem rgba(0, 123, 255, .25)"),
+                        (editor.getContainer().style.borderColor = "#80bdff");
+                });
+                editor.on("blur", () => {
+                    (editor.getContainer().style.boxShadow = ""),
+                        (editor.getContainer().style.borderColor = "");
+                });
+            }
+        });
+      
     </script>
 }
 
 <h4>PostCreateRequest</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-10">
         <form asp-action="Create" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">

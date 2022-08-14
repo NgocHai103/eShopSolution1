@@ -19,7 +19,7 @@ namespace eShopSolution.Data.Configurations
             builder.Property(x => x.ImagePath).HasMaxLength(200).IsRequired(true);
             builder.Property(x => x.Caption).HasMaxLength(200);
 
-            builder.HasOne(x => x.Post).WithMany(x => x.PostImages).HasForeignKey(x => x.PostId);
+          // builder.HasOne(x => x.PostId).WithMany(x => x.Po).HasForeignKey(x => x.PostId);
         }
     }
 }

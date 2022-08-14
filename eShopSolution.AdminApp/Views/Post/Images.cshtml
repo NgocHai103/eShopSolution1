@@ -1,0 +1,72 @@
+﻿@using eShopSolution.ViewModels.Common;
+@model PageResult<eShopSolution.ViewModels.Catalog.PostImages.PostImageVm>
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+
+@{
+    ViewData["Title"] = "Images";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <h1 class="mt-4">Hình ảnh bài đăng</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Hình ảnh bài đăng</li>
+    </ol>
+    <div class="card mb-12">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                    <a class="btn btn-success" asp-action="UpLoadImage" asp-controller="Post">Tải lên</a>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <form asp-action="images" method="get">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="text" value="@ViewBag.Keyword" name="keyword" class="form-control" />
+                            </div>
+                                                        <div class="cold-md-3">
+                                <button type="submit" class="btn btn-primary">Tìm</button>
+                                <button type="button" onclick="window.location.href='/Post/images'" class="btn btn-dark">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                @if (ViewBag.SuccessMsg != null)
+                {
+                    <div id="msgAlert" class="alert alert-success" role="alert">
+                        @ViewBag.SuccessMsg
+                    </div>
+                }
+            </div>
+            <div class="row">
+
+                @foreach (var item in Model.Items)
+                {
+                   
+                    <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                            <img src="@Configuration["BaseAddress"]/user-content/@item.ImagePath" style=" max-width: 100%; max-height: 100%;"/>
+                            <div class="caption">
+                                @*<h3>Bootstrap Thumbnail Customization</h3>*@
+                                <p class="card-description"><strong>@item.Caption</strong> </p>
+                                <div class="row " >
+                                    <p class="m-1"><a href="#" class="btn btn-primary" role="button">Thêm</a></p>
+                                    <p class="m-1"><a href="#" class="btn btn-primary" role="button">Xóa</a></p>
+                                    <p class="m-1"><a href="#" class="btn btn-primary" role="button">Sửa</a></p>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            @await Component.InvokeAsync("Pager", Model)
+        </div>
+    </div>
+</div>

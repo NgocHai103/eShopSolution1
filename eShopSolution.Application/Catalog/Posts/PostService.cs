@@ -4,6 +4,7 @@ using eShopSolution.Data.Entities;
 using eShopSolution.Utilities.Constants;
 using eShopSolution.Utilities.Exceptions;
 using eShopSolution.ViewModels.Catalog.Post;
+using eShopSolution.ViewModels.Catalog.PostImages;
 using eShopSolution.ViewModels.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -79,11 +80,11 @@ namespace eShopSolution.Application.Catalog.Posts
         {
             var post = await _context.Posts.FindAsync(PostId);
             if (post == null) throw new EShopException($"Cannot find a Post: {PostId}");
-            var images = _context.PostImages.Where(i => i.IsDefault == true && i.PostId == PostId);
-            foreach (var image in images)
-            {
-                _storageService.DeleteFileAsync(image.ImagePath);
-            }
+           // var images = _context.PostImages.Where(i => i.IsDefault == true && i.PostId == PostId);
+            //foreach (var image in images)
+            //{
+            //    _storageService.DeleteFileAsync(image.ImagePath);
+            //}
             _context.Posts.Remove(post);
             return await _context.SaveChangesAsync();
         }
@@ -98,10 +99,10 @@ namespace eShopSolution.Application.Catalog.Posts
             var query = from p in _context.Posts
                         join pt in _context.PostTranslations on p.Id equals pt.PostId into ppt
                         from pt in ppt.DefaultIfEmpty()
-                        join pi in _context.PostImages on p.Id equals pi.PostId into ppi
-                        from pi in ppi.DefaultIfEmpty()
+                       // join pi in _context.PostImages on p.Id equals pi.PostId into ppi
+                       // from pi in ppi.DefaultIfEmpty()
                         where pt.LanguageId == request.LanguageId
-                        select new { p, pt ,pi};
+                        select new { p, pt /*,pi*/};
 
             if (!string.IsNullOrEmpty(request.Keyword))
             {
@@ -120,25 +121,25 @@ namespace eShopSolution.Application.Catalog.Posts
                     Description = x.pt.Description,
                     Content = x.pt.Content,
                     LanguageId = x.pt.LanguageId,
-                    Images =  x.pi.ImagePath!=null?new List<string> { x.pi.ImagePath }: new List<string> { }
+                    Images = /* x.pi.ImagePath!=null?new List<string> { x.pi.ImagePath }: */new List<string> { }
                 })
                 .Distinct()
                 .ToListAsync();
 
-            var dataGroupById = data.GroupBy(x => x.Id);
-            List<PostVm> result = new List<PostVm>();
-            foreach(var group in dataGroupById)
-            {
-                foreach (var item in group)
-                {
-                    var temp = result.Find(x => x.Id == item.Id);
-                    if (temp == null)
-                        result.Add(item);
-                    else if(item.Images.Count > 0)
-                        temp.Images.Add(item.Images.First());
+            //var dataGroupById = data.GroupBy(x => x.Id);
+            //List<PostVm> result = new List<PostVm>();
+            //foreach(var group in dataGroupById)
+            //{
+            //    foreach (var item in group)
+            //    {
+            //        var temp = result.Find(x => x.Id == item.Id);
+            //        if (temp == null)
+            //            result.Add(item);
+            //        else if(item.Images.Count > 0)
+            //            temp.Images.Add(item.Images.First());
 
-                }
-            }
+            //    }
+            //}
 
              var pageResult = new ApiSuccessResult<PageResult<PostVm>>(
                 new PageResult<PostVm>()
@@ -146,7 +147,7 @@ namespace eShopSolution.Application.Catalog.Posts
                     TotalRecords = totalRow,
                     PageIndex = request.PageIndex,
                     PageSize = request.PageSize,
-                    Items = result
+                    Items = data
                 });
             return pageResult;
         }
@@ -158,7 +159,7 @@ namespace eShopSolution.Application.Catalog.Posts
             var postTranslation = await _context.PostTranslations.FirstOrDefaultAsync(x => x.PostId == PostId
             && x.LanguageId == languageId);
             var postImages = await _context.PostImages.ToArrayAsync<PostImage>();
-            var postImage = postImages.Where(x => x.PostId == PostId && x.IsDefault == true).Select(x=>x.ImagePath).ToList();
+            //var postImage = postImages.Where(x => x.PostId == PostId && x.IsDefault == true).Select(x=>x.ImagePath).ToList();
 
        
             return new PostVm()
@@ -169,7 +170,7 @@ namespace eShopSolution.Application.Catalog.Posts
                 LanguageId = postTranslation.LanguageId,
                 Content = postTranslation != null ? postTranslation.Content : null,
                 Name = postTranslation != null ? postTranslation.Name : null,
-                Images = postImage.Count > 0 ? postImage : new List<string> { "no-image.jpg" }
+               // Images = postImage.Count > 0 ? postImage : new List<string> { "no-image.jpg" }
             };
         }
 
@@ -218,9 +219,55 @@ namespace eShopSolution.Application.Catalog.Posts
             return new ApiSuccessResult<bool>();
         }
 
-        public async Task<string> UploadImage(IFormFile request)
+        public async Task<string> UploadImage(PostImageCreateRequest request)
         {
-            return await this.SaveFile(request);
+            var image = new PostImage();
+            var ImagePath = await this.SaveFile(request.ImageFile);
+            image.Caption = request.Caption;
+            image.FileSize = request.ImageFile.Length;
+            image.ImagePath = ImagePath;
+            image.IsDefault = request.IsDefault;
+
+            _context.PostImages.Add(image);
+            var result = await  _context.SaveChangesAsync();
+            if(result == 0)
+                return "";
+            return image.ImagePath;
+        }
+
+        public async Task<ApiResult<PageResult<PostImageVm>>> GetAllImage(GetPostImageRequest request)
+        {
+            var query = from p in _context.PostImages
+                        select new { p};
+
+            if (!string.IsNullOrEmpty(request.Keyword))
+            {
+                query = query.Where(x => x.p.Caption.Contains(request.Keyword));
+            }
+
+            int totalRow = await query.CountAsync();
+
+            var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(x => new PostImageVm()
+                {
+                    Id = x.p.Id,
+                    Caption = x.p.Caption,
+                    IsDefault = x.p.IsDefault,
+                    ImagePath = x.p.ImagePath
+                })
+                .Distinct()
+                .ToListAsync();
+
+            var pageResult = new ApiSuccessResult<PageResult<PostImageVm>>(
+               new PageResult<PostImageVm>()
+               {
+                   TotalRecords = totalRow,
+                   PageIndex = request.PageIndex,
+                   PageSize = request.PageSize,
+                   Items = data
+               });
+            return pageResult;
         }
     }
 }

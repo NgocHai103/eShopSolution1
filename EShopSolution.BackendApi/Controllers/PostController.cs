@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using eShopSolution.Application.Catalog.Posts;
 using eShopSolution.ViewModels.Catalog.Post;
+using eShopSolution.ViewModels.Catalog.PostImages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,6 @@ namespace EShopSolution.BackendApi.Controllers
         {
 
             _postSevice = postSevice;
-            /////////
         }
         [HttpGet("paging")]
         public async Task<IActionResult> GetPaging([FromQuery] GetPostPagingRequest request)
@@ -70,30 +70,38 @@ namespace EShopSolution.BackendApi.Controllers
                 return BadRequest("Cannot find product");
             return Ok(post);
         }
-        [HttpPost("/uploadImage")]
-        [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Create(IFormFile file)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var result = await _postSevice.UploadImage(file);
-            var a = new JsonResult(new { path = result });
-            return Ok(a);
-        }
-        [HttpGet("/uploadImage")]
-        public async Task<IActionResult> GetTokenImage()
-        {
 
-            var token = new JwtSecurityToken("Tokens:Issuer",
-                "Tokens:Issuer",
-                expires: DateTime.Now.AddHours(3));
+        //localhost:port/api/post/images?pageIndex=1$pageSize=10&CategoryId=xx 
+        [HttpGet("image")]
+        public async Task<IActionResult> GetPaging([FromQuery] GetPostImageRequest request)
+        {
+            var products = await _postSevice.GetAllImage(request);
+            return Ok(products);
+        }
+
+        [HttpPost("uploadImage")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> Create([FromForm] PostImageCreateRequest request)
+        {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+            var result = await _postSevice.UploadImage(request);
+            return Ok(new JsonResult(new { path = result }));
         }
+        //[HttpGet("/getImage")]
+        //public async Task<IActionResult> GetTokenImage()
+        //{
+
+        //    var token = new JwtSecurityToken("Tokens:Issuer",
+        //        "Tokens:Issuer",
+        //        expires: DateTime.Now.AddHours(3));
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+        //    return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+        //}
     }
 }
